@@ -26,6 +26,11 @@ For each game in the PGN file, the tool generates:
 •	White_vs_Black_GameX.pdf
 •	White_vs_Black_GameX_page_1.jpg, page_2.jpg, …
 
+## 💻USAGE
+		
+python scoresheet_generator.py example.pgn -o output --dpi 300 --poppler "C:/Tools/poppler/bin"
+
+
 ## 🧠 Notes
 •	Elo ratings are shown only if present in the PGN headers (WhiteElo, BlackElo)
 •	Layout is optimized for DIN A5 — ideal for printing or digital archiving
