@@ -31,6 +31,6 @@ For each game in the PGN file, the tool generates:
 •	Layout is optimized for DIN A5 — ideal for printing or digital archiving
 •	JPG export uses pdf2image and requires Poppler
 
-##📜 License
+## 📜 License
 This tool is free to use and can be adapted for club, tournament, or personal use.
 
