@@ -18,8 +18,7 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
    - Extract and note the path to the `poppler/bin` folder
 3. Install dependencies:
 
-```bash
-pip install -r requirements.txt
+   bash pip install -r requirements.txt
 
 
 ## 📁 Output
