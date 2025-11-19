@@ -22,7 +22,7 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
 pip install -r requirements.txt
 
 
-📁 Output
+## 📁 Output
 For each game in the PGN file, the tool generates:
 •	White_vs_Black_GameX.pdf
 •	White_vs_Black_GameX_page_1.jpg, page_2.jpg, …
@@ -30,6 +30,6 @@ For each game in the PGN file, the tool generates:
 •	Elo ratings are shown only if present in the PGN headers (WhiteElo, BlackElo)
 •	Layout is optimized for DIN A5 — ideal for printing or digital archiving
 •	JPG export uses pdf2image and requires Poppler
-📜 License
+##📜 License
 This tool is free to use and can be adapted for club, tournament, or personal use.
 
