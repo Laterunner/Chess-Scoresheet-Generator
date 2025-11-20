@@ -144,13 +144,13 @@ def generate_scoresheets_from_pgn_file(pgn_path, output_dir, jpg_enabled=True):
 def main():
     parser = argparse.ArgumentParser(description="Erzeuge Scoresheets aus PGN-Dateien.")
     parser.add_argument("pgn_files", nargs="+", help="Pfad zu einer oder mehreren PGN-Dateien")
-    parser.add_argument("--no-jpg", action="store_true", help="JPG-Export deaktivieren")
+    parser.add_argument("--jpg", action="store_true", help="Enable JPG export (disabled by default)")
     parser.add_argument("--outdir", default="output", help="Zielverzeichnis für PDF/JPG")
     args = parser.parse_args()
 
     for pgn_path in tqdm(args.pgn_files, desc="Verarbeite PGN-Dateien"):
-        try:
-            generate_scoresheets_from_pgn_file(pgn_path, args.outdir, jpg_enabled=not args.no_jpg)
+        try: 
+            generate_scoresheets_from_pgn_file(pgn_path, args.outdir, jpg_enabled=args.jpg)
         except Exception as e:
             print(f"⚠️ Fehler bei {pgn_path}: {e}")
 
