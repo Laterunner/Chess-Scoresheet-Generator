@@ -1,0 +1,38 @@
+def draw_metadata_header(c, headers, page_number):
+    y = 570
+    logo_path = "logo.png"
+
+    try:
+        if os.path.exists(logo_path):
+            logo = ImageReader(logo_path)
+            c.drawImage(logo, x=330, y=y - 10, width=30, height=30, preserveAspectRatio=True, mask='auto')
+    except Exception as e:
+        print(f"⚠️ Logo konnte nicht geladen werden: {e}")
+
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(30, y, f"{headers['White']} vs {headers['Black']} – Seite {page_number}")
+
+    c.setFont("Helvetica", 9)
+    y -= 12
+    c.drawString(30, y, f"Event:  {headers['Event']}")
+
+    y -= 12
+    c.drawString(30, y, f"Ort:    {headers['Site']}")
+
+    y -= 12
+    c.drawString(30, y, f"Datum:  {format_pgn_date(headers['Date'])}")
+    c.drawString(180, y, f"Runde:  {headers['Round']}")
+
+    y -= 12
+    c.drawString(30, y, f"Weiß:   {headers['White']}")
+    c.drawString(180, y, f"Schwarz:{headers['Black']}")
+
+    y -= 12
+    c.drawString(30, y, f"ELO:    {headers['WhiteElo']}")
+    c.drawString(180, y, f"ELO:    {headers['BlackElo']}")
+    c.drawString(280, y, f"Ergebnis:  {headers['Result']}")
+
+    y -= 8
+    c.line(30, y, 380, y)
+
+    return y - 20  # Abstand zur Notation
