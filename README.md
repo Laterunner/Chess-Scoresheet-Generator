@@ -1,51 +1,16 @@
-##♟️ Chess Scoresheet Generator
 
-A robust, print-optimized tool for automatically generating professional chess scoresheets (notation sheets) in DIN A5 format — perfect for clubs, tournaments, and archival use.
-
-✨ Features
-
-✅ Multi-page PDF generation from PGN files
-
-✅ Optional JPG export for each page
-
-✅ DIN A5 layout (148 × 210 mm) for compact printing
-
-✅ Three-column notation layout with vertical separators
-
-✅ Header with event, players, ELO ratings, result
-
-✅ Optional logo in the top-right corner (e.g. club logo)
-
-✅ Graceful fallback for missing PGN tags or logo
-
-✅ Batch processing of multiple games per PGN file
-
-📦 Installation
-
-pip install reportlab chess tqdm pdf2image
 
 For JPG export, Poppler is required.On Windows, add the poppler/bin folder to your system PATH.
 
-🚀 Usage
-
+🚀 Usage:
 python scoresheet_generator.py my_games.pgn
-
-Options:
-
 --outdir <folder>     # Output directory (default: output)
 --no-jpg              # Disable JPG export
 
 Example:
+python scoresheet_generator.py *.pgn --outdir scoresheets --no-jpg
 
-python scoresheet_generator.py *.pgn --outdir results/
-
-🖼️ Logo Support (Optional)
-
-Place a file named logo.png in the same directory.Recommended: square, transparent PNG, approx. 100×100 px.
-
-📄 Output
-
-One PDF per game:tournament_game1_PlayerA_vs_PlayerB.pdf
+For each game in the pgn file one pdf file withe players names is generated. 
 
 If JPG export is enabled:..._page1.jpg, ..._page2.jpg, etc.
 
@@ -69,15 +34,6 @@ ELO:     1850                 ELO:   1920        Result: ½–½
 
 🤝 License
 
-Open Source – MIT LicenseFree to use for clubs, tournaments, and personal archives.
-
-
-
-
-
-
-
-
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -87,11 +43,21 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
 
 ## 🔧 Features
 
+✅ Multi-page PDF generation from PGN files
+
+✅ Batch processing of multiple games per PGN file
 - Processes PGN files with one or multiple games
 - Creates a clean, multi-column PDF scoresheet for each game
+- Optional JPG export for each page
 - Displays player names, date, event, and Elo ratings (if available)
-- Optional: exports each PDF page as a high-resolution JPG
 - Includes a progress bar using `tqdm` for smooth CLI feedback
+- DIN A5 layout (148 × 210 mm) for compact printing
+- Optional logo in the top-right corner (e.g. club logo)
+- Graceful fallback for missing PGN tags or logo
+🖼️ Logo Support (Optional)
+
+Place a file named logo.png in the same directory.Recommended: square, transparent PNG, approx. 100×100 px.
+
 
 ## 📦 Installation
 
@@ -100,9 +66,7 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
    - Download from [Poppler for Windows](https://github.com/oschwartz10612/poppler-windows/releases)
    - Extract and note the path to the `poppler/bin` folder
 3. Install dependencies:
-
    bash pip install -r requirements.txt
-
 
 ## 📁 Output
 For each game in the PGN file, the tool generates:
@@ -110,15 +74,16 @@ For each game in the PGN file, the tool generates:
 •	White_vs_Black_GameX_page_1.jpg, page_2.jpg, …
 
 ## 💻Examples how to use
-	python scoresheet_generator.py partie1.pgn partie2.pgn
+	python scoresheet_generator.py game1.pgn game2.pgn
 	python scoresheet_generator.py *.pgn --no-jpg
-	python scoresheet_generator.py game.pgn --outdir ergebnisse/
+	python scoresheet_generator.py game.pgn --outdir scoresheets
 
+	
 ## 🧠 Notes
 •	Elo ratings are shown only if present in the PGN headers (WhiteElo, BlackElo)
 •	Layout is optimized for DIN A5 — ideal for printing or digital archiving
 •	JPG export uses pdf2image and requires Poppler
 
 ## 📜 License
-This tool is free to use and can be adapted for club, tournament, or personal use.
+Open Source – MIT LicenseFree to use for clubs, tournaments, and personal archives.
 
