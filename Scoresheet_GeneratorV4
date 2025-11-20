@@ -99,6 +99,35 @@ def draw_metadata_header(c, headers, page_number):
     y -= 10
     c.line(50, y, 550, y)
 '''
+#-------------------------------------------------------------------------------------------------------------
+
+def draw_scoresheet(c, moves, x_start=50, y_start=720, column_spacing=180, row_spacing=20, black_offset=60):
+    max_full_moves_per_column = 20
+
+    # Vertikale Linien zwischen den Spalten
+    c.setStrokeColorRGB(0.7, 0.7, 0.7)  # hellgrau
+    c.setLineWidth(0.5)
+    c.line(x_start + column_spacing - 10, y_start + 10, x_start + column_spacing - 10, y_start - max_full_moves_per_column * row_spacing)
+    c.line(x_start + 2 * column_spacing - 10, y_start + 10, x_start + 2 * column_spacing - 10, y_start - max_full_moves_per_column * row_spacing)
+
+    # Zugnotation
+    for i, move in enumerate(moves):
+        move_number = i // 2 + 1
+        is_white = i % 2 == 0
+        col = (move_number - 1) // max_full_moves_per_column
+        row = (move_number - 1) % max_full_moves_per_column
+        x = x_start + col * column_spacing
+        if not is_white:
+            x += black_offset
+        y = y_start - row * row_spacing
+        label = f"{move_number}." if is_white else ""
+        c.drawString(x, y, f"{label} {move}")
+
+
+#-------------------------------------------------------------------------------------------------------------
+
+
+'''
 def draw_scoresheet(c, moves, x_start=50, y_start=720, column_spacing=180, row_spacing=20, black_offset=60):
     max_full_moves_per_column = 20
     for i, move in enumerate(moves):
@@ -112,6 +141,7 @@ def draw_scoresheet(c, moves, x_start=50, y_start=720, column_spacing=180, row_s
         y = y_start - row * row_spacing
         label = f"{move_number}." if is_white else ""
         c.drawString(x, y, f"{label} {move}")
+'''
 
 def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
     os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
