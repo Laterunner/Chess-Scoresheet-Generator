@@ -101,7 +101,7 @@ def draw_metadata_header(c, headers, page_number):
 '''
 #-------------------------------------------------------------------------------------------------------------
 
-def draw_scoresheet(c, moves, x_start=50, y_start=720, column_spacing=180, row_spacing=20, black_offset=60):
+def draw_scoresheet(c, moves, x_start=50, y_start=700, column_spacing=180, row_spacing=20, black_offset=60):
     max_full_moves_per_column = 20
 
     # Vertikale Linien zwischen den Spalten
