@@ -1,3 +1,86 @@
+♟️ Chess Scoresheet Generator
+
+A robust, print-optimized tool for automatically generating professional chess scoresheets (notation sheets) in DIN A5 format — perfect for clubs, tournaments, and archival use.
+
+✨ Features
+
+✅ Multi-page PDF generation from PGN files
+
+✅ Optional JPG export for each page
+
+✅ DIN A5 layout (148 × 210 mm) for compact printing
+
+✅ Three-column notation layout with vertical separators
+
+✅ Header with event, players, ELO ratings, result
+
+✅ Optional logo in the top-right corner (e.g. club logo)
+
+✅ Graceful fallback for missing PGN tags or logo
+
+✅ Batch processing of multiple games per PGN file
+
+📦 Installation
+
+pip install reportlab chess tqdm pdf2image
+
+For JPG export, Poppler is required.On Windows, add the poppler/bin folder to your system PATH.
+
+🚀 Usage
+
+python scoresheet_generator.py my_games.pgn
+
+Options:
+
+--outdir <folder>     # Output directory (default: output)
+--no-jpg              # Disable JPG export
+
+Example:
+
+python scoresheet_generator.py *.pgn --outdir results/
+
+🖼️ Logo Support (Optional)
+
+Place a file named logo.png in the same directory.Recommended: square, transparent PNG, approx. 100×100 px.
+
+📄 Output
+
+One PDF per game:tournament_game1_PlayerA_vs_PlayerB.pdf
+
+If JPG export is enabled:..._page1.jpg, ..._page2.jpg, etc.
+
+🧠 Example Header Layout
+
+White:   Max Mustermann       Black: Erika Example
+ELO:     1850                 ELO:   1920        Result: ½–½
+────────────────────────────────────────────────────────────
+
+🛠️ To-Do / Ideas
+
+[ ] ZIP export of all PDFs/JPGs
+
+[ ] GUI or web frontend
+
+[ ] Opening detection (ECO code)
+
+[ ] Support for landscape or DIN A4
+
+[ ] Footer with club name or website
+
+🤝 License
+
+Open Source – MIT LicenseFree to use for clubs, tournaments, and personal archives.
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
 # 🧾 Chess Scoresheet Generator
 
 A practical Python tool for generating multi-page DIN A5 chess scoresheets from PGN files — perfect for tournaments, clubs, or personal archives.
