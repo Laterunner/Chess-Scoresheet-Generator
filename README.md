@@ -1,4 +1,4 @@
-♟️ Chess Scoresheet Generator
+'##♟️ Chess Scoresheet Generator
 
 A robust, print-optimized tool for automatically generating professional chess scoresheets (notation sheets) in DIN A5 format — perfect for clubs, tournaments, and archival use.
 
