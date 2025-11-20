@@ -83,6 +83,20 @@ For each game in the PGN file, the tool generates:
 •	Layout is optimized for DIN A5 — ideal for printing or digital archiving
 •	JPG export uses pdf2image and requires Poppler
 
+## 🛠️ To-Do / Ideas
+
+[ ] ZIP export of all PDFs/JPGs
+
+[ ] GUI or web frontend
+
+[ ] Opening detection (ECO code)
+
+[ ] Support for landscape or DIN A4
+
+[ ] Footer with club name or website
+
+
+
 ## 📜 License
 Open Source – MIT LicenseFree to use for clubs, tournaments, and personal archives.
 
