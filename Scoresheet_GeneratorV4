@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 from tqdm import tqdm
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A5
 from reportlab.lib.utils import ImageReader
 from pdf2image import convert_from_path
 import chess.pgn
@@ -15,102 +16,56 @@ def format_pgn_date(date_str):
     except Exception:
         return date_str
 
-
-
-
-#------------------------------------------------------------------------------------------------------------
 def draw_metadata_header(c, headers, page_number):
-    y = 800
+    y = 570
     logo_path = "logo.png"
 
     # Optionales Logo oben rechts
     try:
         if os.path.exists(logo_path):
             logo = ImageReader(logo_path)
-            c.drawImage(logo, x=500, y=770, width=40, height=40, preserveAspectRatio=True, mask='auto')
+            c.drawImage(logo, x=330, y=y - 10, width=30, height=30, preserveAspectRatio=True, mask='auto')
     except Exception as e:
         print(f"⚠️ Logo konnte nicht geladen werden: {e}")
 
     # Titelzeile
-    c.setFont("Helvetica-Bold", 12)
-    title = f"{headers['White']} vs {headers['Black']} – Seite {page_number}"
-    c.drawString(50, y, title)
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(30, y, f"{headers['White']} vs {headers['Black']} – Seite {page_number}")
 
     # Metadatenblock
-    c.setFont("Helvetica", 10)
-    y -= 15
-    c.drawString(50, y, f"Event:  {headers['Event']}")
-    c.drawString(300, y, f"Ort:  {headers['Site']}")
+    c.setFont("Helvetica", 9)
+    y -= 12
+    c.drawString(30, y, f"Event:  {headers['Event']}")
+    c.drawString(180, y, f"Ort:  {headers['Site']}")
 
-    y -= 15
-    c.drawString(50, y, f"Datum:  {format_pgn_date(headers['Date'])}")
-    c.drawString(300, y, f"Runde:  {headers['Round']}")
+    y -= 12
+    c.drawString(30, y, f"Datum:  {format_pgn_date(headers['Date'])}")
+    c.drawString(180, y, f"Runde:  {headers['Round']}")
 
-    y -= 15
-    c.drawString(50, y, f"Weiß:  {headers['White']}")
-    c.drawString(300, y, f"Schwarz:  {headers['Black']}")
+    y -= 12
+    c.drawString(30, y, f"Weiß:  {headers['White']}")
+    c.drawString(180, y, f"Schwarz:  {headers['Black']}")
 
-    y -= 15
-    c.drawString(50, y, f"ELO:  {headers['WhiteElo']}")
-    c.drawString(300, y, f"ELO:  {headers['BlackElo']}")
-    c.drawString(450, y, f"Ergebnis:  {headers['Result']}")
+    y -= 12
+    c.drawString(30, y, f"ELO:  {headers['WhiteElo']}")
+    c.drawString(180, y, f"ELO:  {headers['BlackElo']}")
+    c.drawString(280, y, f"Ergebnis:  {headers['Result']}")
 
-    # Trennlinie
-    y -= 10
-    c.line(50, y, 550, y)
+    y -= 8
+    c.line(30, y, 380, y)
 
-
-#------------------------------------------------------------------------------------------------------------
-'''
-def draw_metadata_header(c, headers, page_number):
-    y = 800
-    logo_path = "logo.png"
-
-    # Optional logo
-    try:
-        if os.path.exists(logo_path):
-            logo = ImageReader(logo_path)
-            c.drawImage(logo, x=500, y=770, width=40, height=40, preserveAspectRatio=True, mask='auto')
-    except Exception as e:
-        print(f"⚠️ Logo konnte nicht geladen werden: {e}")
-
-    # Title
-    c.setFont("Helvetica-Bold", 12)
-    title = f"{headers['White']} vs {headers['Black']} – Seite {page_number}"
-    c.drawString(50, y, title)
-
-    # Metadata rows
-    c.setFont("Helvetica", 10)
-    y -= 15
-    c.drawString(50, y, f"Event: {headers['Event']}")
-    c.drawString(200, y, f"Ort: {headers['Site']}")
-    c.drawString(350, y, f"Datum: {format_pgn_date(headers['Date'])}")
-    c.drawString(500, y, f"Runde: {headers['Round']}")
-
-    y -= 15
-    c.drawString(50, y, f"Weiß: {headers['White']}")
-    c.drawString(200, y, f"Schwarz: {headers['Black']}")
-
-    y -= 15
-    c.drawString(50, y, f"ELO: {headers['WhiteElo']}–{headers['BlackElo']}")
-    c.drawString(200, y, f"Ergebnis: {headers['Result']}")
-
-    # Separator line
-    y -= 10
-    c.line(50, y, 550, y)
-'''
-#-------------------------------------------------------------------------------------------------------------
-
-def draw_scoresheet(c, moves, x_start=50, y_start=700, column_spacing=180, row_spacing=20, black_offset=60):
+def draw_scoresheet(c, moves, x_start=30, y_start=660, column_spacing=110, row_spacing=18, black_offset=45):
     max_full_moves_per_column = 20
 
     # Vertikale Linien zwischen den Spalten
-    c.setStrokeColorRGB(0.7, 0.7, 0.7)  # hellgrau
+    c.setStrokeColorRGB(0.7, 0.7, 0.7)
     c.setLineWidth(0.5)
-    c.line(x_start + column_spacing - 10, y_start + 10, x_start + column_spacing - 10, y_start - max_full_moves_per_column * row_spacing)
-    c.line(x_start + 2 * column_spacing - 10, y_start + 10, x_start + 2 * column_spacing - 10, y_start - max_full_moves_per_column * row_spacing)
+    for i in range(1, 3):
+        x = x_start + i * column_spacing - 10
+        c.line(x, y_start + 5, x, y_start - max_full_moves_per_column * row_spacing)
 
     # Zugnotation
+    c.setFont("Helvetica", 9)
     for i, move in enumerate(moves):
         move_number = i // 2 + 1
         is_white = i % 2 == 0
@@ -122,37 +77,17 @@ def draw_scoresheet(c, moves, x_start=50, y_start=700, column_spacing=180, row_s
         y = y_start - row * row_spacing
         label = f"{move_number}." if is_white else ""
         c.drawString(x, y, f"{label} {move}")
-
-
-#-------------------------------------------------------------------------------------------------------------
-
-
-'''
-def draw_scoresheet(c, moves, x_start=50, y_start=720, column_spacing=180, row_spacing=20, black_offset=60):
-    max_full_moves_per_column = 20
-    for i, move in enumerate(moves):
-        move_number = i // 2 + 1
-        is_white = i % 2 == 0
-        col = (move_number - 1) // max_full_moves_per_column
-        row = (move_number - 1) % max_full_moves_per_column
-        x = x_start + col * column_spacing
-        if not is_white:
-            x += black_offset
-        y = y_start - row * row_spacing
-        label = f"{move_number}." if is_white else ""
-        c.drawString(x, y, f"{label} {move}")
-'''
 
 def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
     os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
-    c = canvas.Canvas(output_pdf)
+    c = canvas.Canvas(output_pdf, pagesize=A5)
 
-    chunk_size = 120  # 60 full moves per page
+    chunk_size = 120
     chunks = [moves[i:i + chunk_size] for i in range(0, len(moves), chunk_size)]
 
     for page_number, chunk in enumerate(chunks, start=1):
         draw_metadata_header(c, headers, page_number)
-        draw_scoresheet(c, chunk)
+        draw_scoresheet(c, chunk, y_start=660)
         c.showPage()
 
     c.save()
