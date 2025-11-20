@@ -15,6 +15,55 @@ def format_pgn_date(date_str):
     except Exception:
         return date_str
 
+
+
+
+#------------------------------------------------------------------------------------------------------------
+def draw_metadata_header(c, headers, page_number):
+    y = 800
+    logo_path = "logo.png"
+
+    # Optionales Logo oben rechts
+    try:
+        if os.path.exists(logo_path):
+            logo = ImageReader(logo_path)
+            c.drawImage(logo, x=500, y=770, width=40, height=40, preserveAspectRatio=True, mask='auto')
+    except Exception as e:
+        print(f"⚠️ Logo konnte nicht geladen werden: {e}")
+
+    # Titelzeile
+    c.setFont("Helvetica-Bold", 12)
+    title = f"{headers['White']} vs {headers['Black']} – Seite {page_number}"
+    c.drawString(50, y, title)
+
+    # Metadatenblock
+    c.setFont("Helvetica", 10)
+    y -= 15
+    c.drawString(50, y, f"Event:  {headers['Event']}")
+    c.drawString(300, y, f"Ort:  {headers['Site']}")
+
+    y -= 15
+    c.drawString(50, y, f"Datum:  {format_pgn_date(headers['Date'])}")
+    c.drawString(300, y, f"Runde:  {headers['Round']}")
+
+    y -= 15
+    c.drawString(50, y, f"Weiß:  {headers['White']}")
+    c.drawString(300, y, f"Schwarz:  {headers['Black']}")
+
+    y -= 15
+    c.drawString(50, y, f"ELO:  {headers['WhiteElo']}")
+    c.drawString(300, y, f"ELO:  {headers['BlackElo']}")
+
+    y -= 15
+    c.drawString(50, y, f"Ergebnis:  {headers['Result']}")
+
+    # Trennlinie
+    y -= 10
+    c.line(50, y, 550, y)
+
+
+#------------------------------------------------------------------------------------------------------------
+'''
 def draw_metadata_header(c, headers, page_number):
     y = 800
     logo_path = "logo.png"
@@ -51,7 +100,7 @@ def draw_metadata_header(c, headers, page_number):
     # Separator line
     y -= 10
     c.line(50, y, 550, y)
-
+'''
 def draw_scoresheet(c, moves, x_start=50, y_start=720, column_spacing=180, row_spacing=20, black_offset=60):
     max_full_moves_per_column = 20
     for i, move in enumerate(moves):
