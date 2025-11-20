@@ -24,7 +24,7 @@ def draw_metadata_header(c, headers, page_number):
     try:
         if os.path.exists(logo_path):
             logo = ImageReader(logo_path)
-            c.drawImage(logo, x=330, y=y - 10, width=30, height=30, preserveAspectRatio=True, mask='auto')
+            c.drawImage(logo, x=330, y=y - 30, width=30, height=30, preserveAspectRatio=True, mask='auto')
     except Exception as e:
         print(f"⚠️ Logo konnte nicht geladen werden: {e}")
 
