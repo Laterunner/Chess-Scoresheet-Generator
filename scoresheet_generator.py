@@ -17,7 +17,9 @@ def extract_moves_from_pgn(pgn_path):
             board.push(move)
     return moves
 
-def draw_scoresheet(c, moves, x_start=50, y_start=750, column_spacing=180, row_spacing=20):
+
+        
+def draw_scoresheet(c, moves, x_start=50, y_start=750, column_spacing=180, row_spacing=20, black_offset=40):
     max_full_moves_per_column = 20  # 20 Züge = 40 Halbzüge
     for i, move in enumerate(moves):
         move_number = i // 2 + 1
@@ -25,9 +27,13 @@ def draw_scoresheet(c, moves, x_start=50, y_start=750, column_spacing=180, row_s
         col = (move_number - 1) // max_full_moves_per_column
         row = (move_number - 1) % max_full_moves_per_column
         x = x_start + col * column_spacing
+        if not is_white:
+            x += black_offset  # Schwarzzüge etwas nach rechts versetzen
         y = y_start - row * row_spacing
         label = f"{move_number}." if is_white else ""
         c.drawString(x, y, f"{label} {move}")
+
+
 
 def generate_pdf(moves, output_pdf):
     os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
