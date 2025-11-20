@@ -1,7 +1,6 @@
 # 🧾 Chess Scoresheet Generator
 
 A practical Python tool for generating multi-page DIN A5 chess scoresheets from PGN files — perfect for tournaments, clubs, or personal archives.
-![symple1_mini](https://github.com/user-attachments/assets/f0718775-99ce-475e-9b14-ac47150c2801)
 
 ## 🔧 Features
 
@@ -46,17 +45,12 @@ For each game in the PGN file, the tool generates:
 ## 🛠️ To-Do / Ideas
 
 [ ] ZIP export of all PDFs/JPGs
-
 [ ] GUI or web frontend
-
 [ ] Opening detection (ECO code)
-
 [ ] Support for landscape or DIN A4
-
 [ ] Footer with club name or website
-
-
 
 ## 📜 License
 Open Source – MIT LicenseFree to use for clubs, tournaments, and personal archives.
 
+![sample1_mini](https://github.com/user-attachments/assets/4b6fbc49-89ef-4bfc-b911-544b663d4208)
