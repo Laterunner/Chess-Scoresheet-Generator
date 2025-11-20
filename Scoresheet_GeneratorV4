@@ -1,0 +1,143 @@
+import os
+import argparse
+import time
+from datetime import datetime
+from tqdm import tqdm
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
+from pdf2image import convert_from_path
+import chess.pgn
+
+def format_pgn_date(date_str):
+    try:
+        dt = datetime.strptime(date_str, "%Y.%m.%d")
+        return dt.strftime("%#d. %B %Y")  # Use %-d on Linux/macOS
+    except Exception:
+        return date_str
+
+def draw_metadata_header(c, headers, page_number):
+    y = 800
+    logo_path = "logo.png"
+
+    # Optional logo
+    try:
+        if os.path.exists(logo_path):
+            logo = ImageReader(logo_path)
+            c.drawImage(logo, x=500, y=770, width=40, height=40, preserveAspectRatio=True, mask='auto')
+    except Exception as e:
+        print(f"⚠️ Logo konnte nicht geladen werden: {e}")
+
+    # Title
+    c.setFont("Helvetica-Bold", 12)
+    title = f"{headers['White']} vs {headers['Black']} – Seite {page_number}"
+    c.drawString(50, y, title)
+
+    # Metadata rows
+    c.setFont("Helvetica", 10)
+    y -= 15
+    c.drawString(50, y, f"Event: {headers['Event']}")
+    c.drawString(200, y, f"Ort: {headers['Site']}")
+    c.drawString(350, y, f"Datum: {format_pgn_date(headers['Date'])}")
+    c.drawString(500, y, f"Runde: {headers['Round']}")
+
+    y -= 15
+    c.drawString(50, y, f"Weiß: {headers['White']}")
+    c.drawString(200, y, f"Schwarz: {headers['Black']}")
+
+    y -= 15
+    c.drawString(50, y, f"ELO: {headers['WhiteElo']}–{headers['BlackElo']}")
+    c.drawString(200, y, f"Ergebnis: {headers['Result']}")
+
+    # Separator line
+    y -= 10
+    c.line(50, y, 550, y)
+
+def draw_scoresheet(c, moves, x_start=50, y_start=720, column_spacing=180, row_spacing=20, black_offset=60):
+    max_full_moves_per_column = 20
+    for i, move in enumerate(moves):
+        move_number = i // 2 + 1
+        is_white = i % 2 == 0
+        col = (move_number - 1) // max_full_moves_per_column
+        row = (move_number - 1) % max_full_moves_per_column
+        x = x_start + col * column_spacing
+        if not is_white:
+            x += black_offset
+        y = y_start - row * row_spacing
+        label = f"{move_number}." if is_white else ""
+        c.drawString(x, y, f"{label} {move}")
+
+def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
+    os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
+    c = canvas.Canvas(output_pdf)
+
+    chunk_size = 120  # 60 full moves per page
+    chunks = [moves[i:i + chunk_size] for i in range(0, len(moves), chunk_size)]
+
+    for page_number, chunk in enumerate(chunks, start=1):
+        draw_metadata_header(c, headers, page_number)
+        draw_scoresheet(c, chunk)
+        c.showPage()
+
+    c.save()
+
+    if jpg_enabled and os.path.exists(output_pdf) and os.path.getsize(output_pdf) > 0:
+        try:
+            time.sleep(0.5)
+            images = convert_from_path(output_pdf, dpi=300)
+            for i, img in enumerate(images):
+                img_path = os.path.splitext(output_pdf)[0] + f"_page{i+1}.jpg"
+                img.save(img_path, "JPEG")
+        except Exception as e:
+            print(f"⚠️ Fehler beim JPG-Export für {headers['White']} vs {headers['Black']}: {e}")
+
+def generate_scoresheets_from_pgn_file(pgn_path, output_dir, jpg_enabled=True):
+    os.makedirs(output_dir, exist_ok=True)
+    with open(pgn_path, "r", encoding="utf-8") as f:
+        game_index = 1
+        while True:
+            game = chess.pgn.read_game(f)
+            if game is None:
+                break
+            board = game.board()
+            moves = []
+            for move in game.mainline_moves():
+                san = board.san(move)
+                moves.append(san)
+                board.push(move)
+
+            headers = {
+                "Event": game.headers.get("Event", "Unbekanntes Event"),
+                "Site": game.headers.get("Site", "Unbekannter Ort"),
+                "Date": game.headers.get("Date", "????.??.??"),
+                "Round": game.headers.get("Round", "?"),
+                "White": game.headers.get("White", "Weiß"),
+                "Black": game.headers.get("Black", "Schwarz"),
+                "WhiteElo": game.headers.get("WhiteElo", "-"),
+                "BlackElo": game.headers.get("BlackElo", "-"),
+                "Result": game.headers.get("Result", "*")
+            }
+
+            base_name = os.path.splitext(os.path.basename(pgn_path))[0]
+            safe_white = headers["White"].replace(" ", "_")
+            safe_black = headers["Black"].replace(" ", "_")
+            pdf_name = f"{base_name}_game{game_index}_{safe_white}_vs_{safe_black}.pdf"
+            output_pdf = os.path.join(output_dir, pdf_name)
+
+            generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled)
+            game_index += 1
+
+def main():
+    parser = argparse.ArgumentParser(description="Erzeuge Scoresheets aus PGN-Dateien.")
+    parser.add_argument("pgn_files", nargs="+", help="Pfad zu einer oder mehreren PGN-Dateien")
+    parser.add_argument("--no-jpg", action="store_true", help="JPG-Export deaktivieren")
+    parser.add_argument("--outdir", default="output", help="Zielverzeichnis für PDF/JPG")
+    args = parser.parse_args()
+
+    for pgn_path in tqdm(args.pgn_files, desc="Verarbeite PGN-Dateien"):
+        try:
+            generate_scoresheets_from_pgn_file(pgn_path, args.outdir, jpg_enabled=not args.no_jpg)
+        except Exception as e:
+            print(f"⚠️ Fehler bei {pgn_path}: {e}")
+
+if __name__ == "__main__":
+    main()
