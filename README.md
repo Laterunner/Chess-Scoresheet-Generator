@@ -7,24 +7,25 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
 - Processes PGN files with one or multiple games
 - Creates a clean, multi-column PDF scoresheet for each game
 - Optional JPG export for each page
+- suppoert very long Games (unlimited move numbers)
 - Displays player names, date, event, and Elo ratings (if available)
 - Includes a progress bar using `tqdm` for smooth CLI feedback
 - DIN A5 layout (148 × 210 mm) for compact printing
 - Optional logo in the top-right corner (e.g. club logo)
 - Graceful fallback for missing PGN tags or logo
-🖼️ Logo Support (Optional)
+- Logo Support (Optional)
 
-Place a file named logo.png in the same directory.Recommended: square, transparent PNG, approx. 100×100 px.
+For logo place a file named logo.png in the same directory.Recommended: square, transparent PNG, approx. 100×100 px.
 
 
 ## 📦 Installation
-
 1. Install Python 3.8 or higher
 2. (Windows only) Install Poppler:
    - Download from [Poppler for Windows](https://github.com/oschwartz10612/poppler-windows/releases)
    - Extract and note the path to the `poppler/bin` folder
 3. Install dependencies:
    bash pip install -r requirements.txt
+   
 
 ## 📁 Output
 For each game in the PGN file, the tool generates:
