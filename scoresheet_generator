@@ -8,6 +8,7 @@ from reportlab.lib.pagesizes import A5
 from reportlab.lib.utils import ImageReader
 from pdf2image import convert_from_path
 import chess.pgn
+import zipfile
 
 def format_pgn_date(date_str):
     try:
@@ -103,6 +104,55 @@ def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
         except Exception as e:
             print(f"⚠️ Fehler beim JPG-Export für {headers['White']} vs {headers['Black']}: {e}")
 
+
+def generate_scoresheets_from_pgn_file(pgn_path, output_dir, jpg_enabled=True):
+    """
+    Process a PGN file and generate scoresheets (PDF and optional JPG).
+    After processing, create a ZIP archive containing all generated files.
+    """
+    os.makedirs(output_dir, exist_ok=True)
+
+    with open(pgn_path, "r", encoding="utf-8") as f:
+        game_index = 1
+        while True:
+            game = chess.pgn.read_game(f)
+            if game is None:
+                break
+
+            # Extract moves and headers from the game
+            moves = [move for move in game.mainline_moves()]
+            headers = game.headers
+
+            # Build output filename
+            base_name = os.path.splitext(os.path.basename(pgn_path))[0]
+            output_pdf = os.path.join(
+                output_dir,
+                f"{base_name}_game{game_index}_{headers.get('White','?')}_vs_{headers.get('Black','?')}.pdf"
+            )
+
+            # Generate single scoresheet (PDF + optional JPG)
+            generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled)
+
+            game_index += 1
+
+    # ➡️ Create ZIP archive after processing all games
+    base_name = os.path.splitext(os.path.basename(pgn_path))[0]
+    zip_path = os.path.join(output_dir, f"{base_name}_Scoresheets.zip")
+
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+        for root, _, files in os.walk(output_dir):
+            for file in files:
+                # Only include files belonging to this PGN (PDF + JPG)
+                if file.startswith(base_name) and (file.endswith(".pdf") or file.endswith(".jpg")):
+                    full_path = os.path.join(root, file)
+                    arcname = os.path.relpath(full_path, output_dir)
+                    zipf.write(full_path, arcname)
+
+    print(f"📦 ZIP archive created: {zip_path}")
+
+
+'''
+#-----------------------------------------------------------------------------------------------
 def generate_scoresheets_from_pgn_file(pgn_path, output_dir, jpg_enabled=True):
     os.makedirs(output_dir, exist_ok=True)
     with open(pgn_path, "r", encoding="utf-8") as f:
@@ -138,6 +188,8 @@ def generate_scoresheets_from_pgn_file(pgn_path, output_dir, jpg_enabled=True):
 
             generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled)
             game_index += 1
+#----------------------------------------------------------------------------------------------------
+'''
 
 def main():
     parser = argparse.ArgumentParser(description="Erzeuge Scoresheets aus PGN-Dateien.")
