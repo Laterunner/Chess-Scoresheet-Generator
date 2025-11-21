@@ -13,8 +13,8 @@ def run_generator():
 
     script_path = os.path.join(os.path.dirname(__file__), "scoresheet_generator.py")
     cmd = [sys.executable, script_path, pgn_file, "--outdir", outdir]
-    if not jpg_enabled:
-        cmd.append("--no-jpg")
+    if jpg_enabled:
+        cmd.append("--jpg")
 
     # Run generator, let output flow to terminal
     result = subprocess.run(cmd)
