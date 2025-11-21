@@ -79,6 +79,45 @@ def draw_scoresheet(c, moves, x_start=30, y_start=620, column_spacing=110, row_s
         label = f"{move_number}." if is_white else ""
         c.drawString(x, y, f"{label} {move}")
 
+#NEW FOR TESTING---------------------------------------------------------------------------
+def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
+    os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
+    c = canvas.Canvas(output_pdf, pagesize=A5)
+    width, height = A5
+
+    chunk_size = 120
+    chunks = [moves[i:i + chunk_size] for i in range(0, len(moves), chunk_size)]
+
+    for page_number, chunk in enumerate(chunks, start=1):
+        # Draw header + moves
+        y_start = draw_metadata_header(c, headers, page_number)
+        draw_scoresheet(c, chunk, y_start=y_start)
+
+        # --- Footer integration ---
+        c.setFont("Helvetica", 9)
+        footer_text = "Contact: info@myclub.org | https://myclub.org"
+        # Horizontal line above footer
+        c.line(30, 30, width - 30, 30)
+        # Centered footer text
+        c.drawCentredString(width / 2.0, 15, footer_text)
+
+        # Finalize this page
+        c.showPage()
+
+    c.save()
+
+    if jpg_enabled and os.path.exists(output_pdf) and os.path.getsize(output_pdf) > 0:
+        try:
+            time.sleep(0.5)
+            images = convert_from_path(output_pdf, dpi=300)
+            for i, img in enumerate(images):
+                img_path = os.path.splitext(output_pdf)[0] + f"_page{i+1}.jpg"
+                img.save(img_path, "JPEG")
+        except Exception as e:
+            print(f"⚠️ Fehler beim JPG-Export für {headers['White']} vs {headers['Black']}: {e}")
+
+#--TO DELETE-------------------------------------------------------------------------------
+'''
 def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
     os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
     c = canvas.Canvas(output_pdf, pagesize=A5)
@@ -102,7 +141,7 @@ def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
                 img.save(img_path, "JPEG")
         except Exception as e:
             print(f"⚠️ Fehler beim JPG-Export für {headers['White']} vs {headers['Black']}: {e}")
-
+'''
 #------------------------------------------------------------------------------
 
 def convert_pdf_to_jpg(pdf_path, output_dir):
