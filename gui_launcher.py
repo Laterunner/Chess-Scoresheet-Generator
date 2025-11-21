@@ -1,25 +1,29 @@
-import sys
+import tkinter as tk
+from tkinter import filedialog, messagebox
+import subprocess
 
 def run_generator():
+    # Select PGN file
     pgn_file = filedialog.askopenfilename(filetypes=[("PGN files", "*.pgn")])
     if not pgn_file:
         return
 
+    # Output directory
     outdir = outdir_entry.get().strip() or "output"
+
+    # JPG option
     jpg_enabled = jpg_var.get()
 
-    # Use the same Python interpreter running the GUI
-    cmd = [sys.executable, "scoresheet_generator.py", pgn_file, "--outdir", outdir]
+    # Build command
+    cmd = ["python", "scoresheet_generator.py", pgn_file, "--outdir", outdir]
     if not jpg_enabled:
         cmd.append("--no-jpg")
 
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode == 0:
-            messagebox.showinfo("Done", f"Finished!\n\nOutput:\n{result.stdout}")
-        else:
-            messagebox.showerror("Error", f"Generator failed:\n{result.stderr}")
-    except Exception as e:
-        messagebox.showerror("Error", f"Failed to run generator:\n{e}")
+    # Run generator
+    subprocess.run(cmd)
 
+    # Show confirmation popup
+    messagebox.showinfo("Done", "Scoresheet generation finished successfully!")
+
+    # Close GUI after confirmation
     app.destroy()
