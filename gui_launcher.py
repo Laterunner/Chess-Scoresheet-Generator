@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import filedialog
 import subprocess
@@ -16,8 +17,8 @@ def run_generator():
 
     # Kommando zusammenbauen
     cmd = ["python", "scoresheet_generator.py", pgn_file, "--outdir", outdir]
-    if not jpg_enabled:
-        cmd.append("--no-jpg")
+    if jpg_enabled:
+        cmd.append("--jpg")
 
     # Starten
     subprocess.run(cmd)
