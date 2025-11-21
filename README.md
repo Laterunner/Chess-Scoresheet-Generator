@@ -7,6 +7,7 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
 - Processes PGN files with one or multiple games
 - Creates a clean, multi-column PDF scoresheet for each game
 - Optional JPG export for each page
+- ZIP export of all PDFs/JPGs
 - Supports very long Games (unlimited move numbers)
 - Displays player names, date, event, and Elo ratings (if available)
 - Includes a progress bar using `tqdm` for smooth CLI feedback
@@ -14,6 +15,7 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
 - Optional logo in the top-right corner (e.g. club logo)
 - Graceful fallback for missing PGN tags or logo
 - Logo top left corner (Optional)
+- Simple GUI
 
 For logo place a file named logo.png in the same directory.Recommended: square, transparent PNG, approx. 100×100 px.
 
@@ -50,9 +52,6 @@ For each game in the PGN file, the tool generates:
 •	JPG export uses pdf2image and requires Poppler
 
 ## 🛠️ To-Do / Ideas
-
-[ ] ZIP export of all PDFs/JPGs
-[ ] GUI or web frontend
 [ ] Opening detection (ECO code)
 [ ] Support for landscape or DIN A4
 [ ] Footer with club name or website
