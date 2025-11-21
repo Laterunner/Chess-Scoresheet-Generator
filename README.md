@@ -40,6 +40,9 @@ For each game in the PGN file, the tool generates:
 	pyton scoresheet_generator.py  games.pgn --jpg Enable JPG export (disabled by default)
 	python scoresheet_generator.py games.pgn --outdir scoresheets
 
+	Included are two simple example.pgn files to test with single and multiple games within the pgn files. The program also works fast processing pgn files containing hundreds of chess games. 
+	Jpg conversion takes some time, it must be enabled with the --jpg flag.
+
 	
 ## 🧠 Notes
 •	Elo ratings are shown only if present in the PGN headers (WhiteElo, BlackElo)
