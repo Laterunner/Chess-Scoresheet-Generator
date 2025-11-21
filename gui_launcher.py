@@ -1,80 +1,57 @@
-import os, time, zipfile
-import chess.pgn
-from tqdm import tqdm
-from pdf2image import convert_from_path
 
-def convert_pdf_to_jpg(pdf_path, output_dir):
-    """
-    Convert a PDF to JPG images (one per page) with a nested progress bar.
-    """
-    pages = convert_from_path(pdf_path, dpi=300)
-    for i, page in enumerate(tqdm(pages, desc="Converting to JPG", unit="page", leave=False)):
-        jpg_path = os.path.join(output_dir, f"{os.path.basename(pdf_path)}_page{i+1}.jpg")
-        page.save(jpg_path, "JPEG")
+import tkinter as tk
+from tkinter import filedialog, messagebox
+import subprocess, sys, os
 
-def generate_scoresheets_from_pgn_file(pgn_path, output_dir, jpg_enabled=True):
-    """
-    Process a PGN file and generate scoresheets (PDF and optional JPG).
-    Show progress bars with average time per game.
-    Finally, create a ZIP archive containing all generated files.
-    """
-    os.makedirs(output_dir, exist_ok=True)
+def run_generator():
+    pgn_file = filedialog.askopenfilename(filetypes=[("PGN files", "*.pgn")])
+    if not pgn_file:
+        return
 
-    # Collect all games first
-    games = []
-    with open(pgn_path, "r", encoding="utf-8") as f:
-        while True:
-            game = chess.pgn.read_game(f)
-            if game is None:
-                break
-            games.append(game)
+    outdir = outdir_entry.get().strip() or "output"
+    jpg_enabled = jpg_var.get()
 
-    total_games = len(games)
-    start_time = time.time()
+    script_path = os.path.join(os.path.dirname(__file__), "scoresheet_generator.py")
+    cmd = [sys.executable, script_path, pgn_file, "--outdir", outdir]
+    if not jpg_enabled:
+        cmd.append("--no-jpg")
 
-    # Outer progress bar for games
-    with tqdm(total=total_games, desc="Processing games", unit="game") as pbar:
-        for game_index, game in enumerate(games, start=1):
-            game_start = time.time()
+    # Run generator, let output flow to terminal
+    result = subprocess.run(cmd)
 
-            moves = [move for move in game.mainline_moves()]
-            headers = game.headers
+    if result.returncode == 0:
+        messagebox.showinfo("Done", "Scoresheet generation finished successfully!")
+    else:
+        messagebox.showerror("Error", f"Generator failed with code {result.returncode}")
 
-            base_name = os.path.splitext(os.path.basename(pgn_path))[0]
-            output_pdf = os.path.join(
-                output_dir,
-                f"{base_name}_game{game_index}_{headers.get('White','?')}_vs_{headers.get('Black','?')}.pdf"
-            )
+    app.destroy()
 
-            # Generate PDF (without JPG inside)
-            generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=False)
 
-            # JPG conversion with nested bar
-            if jpg_enabled:
-                convert_pdf_to_jpg(output_pdf, output_dir)
+# GUI setup
+app = tk.Tk()
+app.title("Chess Scoresheet Generator")
 
-            # Update outer bar after full game done
-            pbar.update(1)
+# Center window
+window_width, window_height = 400, 150
+screen_width, screen_height = app.winfo_screenwidth(), app.winfo_screenheight()
+x_position = int((screen_width/2) - (window_width/2))
+y_position = int((screen_height/2) - (window_height/2))
+app.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
-            # Show average time per game so far
-            elapsed = time.time() - start_time
-            avg_time = elapsed / game_index
-            pbar.set_postfix_str(f"avg {avg_time:.1f}s/game")
+# Keep on top
+app.attributes("-topmost", True)
 
-            # Optional: per-game duration
-            # print(f"Game {game_index} took {time.time() - game_start:.1f}s")
+# Output directory field
+tk.Label(app, text="Output directory:").pack(pady=5)
+outdir_entry = tk.Entry(app, width=40)
+outdir_entry.insert(0, "output")
+outdir_entry.pack(pady=5)
 
-    # ➡️ Create ZIP archive after processing all games
-    base_name = os.path.splitext(os.path.basename(pgn_path))[0]
-    zip_path = os.path.join(output_dir, f"{base_name}_Scoresheets.zip")
+# JPG export checkbox
+jpg_var = tk.BooleanVar(value=True)  # default: JPG enabled
+tk.Checkbutton(app, text="Enable JPG export", variable=jpg_var).pack(pady=5)
 
-    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
-        for root, _, files in os.walk(output_dir):
-            for file in files:
-                # Only include files belonging to this PGN (PDF + JPG)
-                if file.startswith(base_name) and (file.endswith(".pdf") or file.endswith(".jpg")):
-                    full_path = os.path.join(root, file)
-                    arcname = os.path.relpath(full_path, output_dir)
-                    zipf.write(full_path, arcname)
+# Start button
+tk.Button(app, text="Select PGN & Start", command=run_generator).pack(pady=10)
 
-    print(f"📦 ZIP archive created: {zip_path}")
+app.mainloop()
