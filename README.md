@@ -32,8 +32,9 @@ For each game in the PGN file, the tool generates:
 •	White_vs_Black_GameX_page_1.jpg, page_2.jpg, …
 
 ## 💻Examples how to use
-	python scoresheet_generator.py game1.pgn game2.pgn
-	python scoresheet_generator.py *.pgn --no-jpg
+	python scoresheet -h for help
+	python scoresheet_generator.py game1.pgn game2.pgn 
+	python scoresheet_generator.py *.pgn --jpg Enable JPG export (disabled by default)
 	python scoresheet_generator.py game.pgn --outdir scoresheets
 
 	
