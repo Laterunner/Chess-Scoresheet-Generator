@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import filedialog
 import subprocess
 import os
+from PIL import Image, ImageTk   # Pillow für Logo-Bild
 
 def run_generator(pgn_path, outdir, jpg_enabled):
-    # Hier rufst du dein Hauptskript auf
     cmd = ["python", "scoresheet_generator.py", pgn_path, "--outdir", outdir]
     if jpg_enabled:
         cmd.append("--jpg")
@@ -14,17 +14,28 @@ def show_autoclose_message(root):
     popup = tk.Toplevel(root)
     popup.title("Fertig")
     tk.Label(popup, text="Alle Scoresheets wurden erstellt!").pack(padx=20, pady=20)
-
-    # Popup nach 3 Sekunden schließen
     popup.after(3000, lambda: close_all(root, popup))
 
 def close_all(root, popup):
     popup.destroy()
-    root.destroy()   # schließt auch das Hauptfenster
+    root.destroy()
 
 def main():
     root = tk.Tk()
     root.title("Scoresheet Generator")
+
+    # --- Logo mittig über PGN-Auswahl ---
+    logo_path = "logo.png"
+    if os.path.exists(logo_path):
+        try:
+            img = Image.open(logo_path)
+            img = img.resize((120, 120), Image.ANTIALIAS)  # Größe anpassen
+            logo_img = ImageTk.PhotoImage(img)
+            logo_label = tk.Label(root, image=logo_img)
+            logo_label.image = logo_img  # Referenz halten
+            logo_label.pack(pady=10)
+        except Exception as e:
+            print(f"⚠️ Logo konnte nicht geladen werden: {e}")
 
     tk.Label(root, text="PGN-Datei auswählen:").pack(pady=5)
     pgn_entry = tk.Entry(root, width=50)
