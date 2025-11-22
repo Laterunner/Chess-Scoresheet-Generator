@@ -15,7 +15,9 @@ A practical Python tool for generating multi-page DIN A5 chess scoresheets from 
 - Optional logo in the top-right corner (e.g. club logo)
 - Graceful fallback for missing PGN tags or logo
 - Logo top left corner (Optional)
+- Footline for email and weblink
 - Simple GUI
+- included is a pgn file with 128 German Bundesliga games for testing
 
 For logo place a file named logo.png in the same directory.Recommended: square, transparent PNG, approx. 100×100 px.
 
