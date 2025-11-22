@@ -9,38 +9,13 @@ def run_generator(pgn_path, outdir, jpg_enabled):
     if jpg_enabled:
         cmd.append("--jpg")
     subprocess.run(cmd)
-'''
+
 def show_autoclose_message(root):
     popup = tk.Toplevel(root)
     popup.title("Fertig")
     tk.Label(popup, text="Alle Scoresheets wurden erstellt!").pack(padx=20, pady=20)
     popup.after(3000, lambda: close_all(root, popup))
-'''
-#--NEW----------------------------------------------------------------------------------
-def show_autoclose_message(root):
-    popup = tk.Toplevel(root)
-    popup.title("Fertig")
 
-    tk.Label(popup, text="Alle Scoresheets wurden erstellt!").pack(padx=20, pady=20)
-
-    # --- Fenstergröße definieren ---
-    window_width = 300
-    window_height = 100
-
-    # Bildschirmgröße abfragen
-    screen_width = popup.winfo_screenwidth()
-    screen_height = popup.winfo_screenheight()
-
-    # Position berechnen (Mitte)
-    x_position = int((screen_width / 2) - (window_width / 2))
-    y_position = int((screen_height / 2) - (window_height / 2))
-
-    # Geometrie setzen
-    popup.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
-
-    # Popup nach 3 Sekunden schließen
-    popup.after(3000, lambda: close_all(root, popup))
-#------------------------------------------------------------------------------------
 def close_all(root, popup):
     popup.destroy()
     root.destroy()
@@ -94,11 +69,6 @@ def main():
         pgn_path = pgn_entry.get()
         outdir = outdir_entry.get()
         jpg_enabled = jpg_var.get()
-
-
-
-
-        
         if pgn_path and os.path.exists(pgn_path):
             run_generator(pgn_path, outdir, jpg_enabled)
             show_autoclose_message(root)
@@ -128,7 +98,7 @@ def main():
     tk.Label(root, text="PGN-Datei auswählen:").pack(pady=5)
     pgn_entry = tk.Entry(root, width=50)
     pgn_entry.pack(pady=5)
-'''
+
 
     def browse_file():
         filename = filedialog.askopenfilename(filetypes=[("PGN files", "*.pgn")])
@@ -157,6 +127,6 @@ def main():
     tk.Button(root, text="Generieren", command=start_generation).pack(pady=20)
 
     root.mainloop()
-
+'''
 if __name__ == "__main__":
     main()
