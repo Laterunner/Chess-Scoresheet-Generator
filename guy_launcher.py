@@ -10,12 +10,40 @@ def run_generator(pgn_path, outdir, jpg_enabled):
         cmd.append("--jpg")
     subprocess.run(cmd)
 
+'''
 def show_autoclose_message(root):
     popup = tk.Toplevel(root)
     popup.title("Fertig")
     tk.Label(popup, text="Alle Scoresheets wurden erstellt!").pack(padx=20, pady=20)
     popup.after(3000, lambda: close_all(root, popup))
+'''
+#-------NEW---------------------------------------------------------------------------------
+def show_autoclose_message(root):
+    popup = tk.Toplevel(root)
+    popup.title("Fertig")
 
+    tk.Label(popup, text="Alle Scoresheets wurden erstellt!").pack(padx=20, pady=20)
+
+    # --- Fenstergröße definieren ---
+    window_width = 300
+    window_height = 100
+
+    # Bildschirmgröße abfragen
+    screen_width = popup.winfo_screenwidth()
+    screen_height = popup.winfo_screenheight()
+
+    # Position berechnen (Mitte)
+    x_position = int((screen_width / 2) - (window_width / 2))
+    y_position = int((screen_height / 2) - (window_height / 2))
+
+    # Geometrie setzen
+    popup.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+
+    # Popup nach 3 Sekunden schließen
+    popup.after(3000, lambda: close_all(root, popup))
+
+
+#----------------------------------------------------------------------------------------
 def close_all(root, popup):
     popup.destroy()
     root.destroy()
