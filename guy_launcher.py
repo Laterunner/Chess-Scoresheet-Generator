@@ -28,8 +28,8 @@ def main():
     logo_path = "logo.png"
     if os.path.exists(logo_path):
         try:
-            img = Image.open(logo_path)
-            img = img.resize((120, 120), Image.ANTIALIAS)  # Größe anpassen
+            img = Image.open(logo_path)            
+            img = img.resize((120, 120), Image.Resampling.LANCZOS)  # Größe anpassen
             logo_img = ImageTk.PhotoImage(img)
             logo_label = tk.Label(root, image=logo_img)
             logo_label.image = logo_img  # Referenz halten
