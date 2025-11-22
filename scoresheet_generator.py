@@ -1,3 +1,4 @@
+#Final Version 11.25
 import os, time, zipfile
 import argparse
 import chess.pgn
@@ -48,7 +49,7 @@ def draw_metadata_header(c, headers, page_number):
     y -= 12
     c.drawString(30, y, f"ELO:    {headers['WhiteElo']}")
     c.drawString(180, y, f"ELO:    {headers['BlackElo']}")
-    c.drawString(280, y, f"Ergebnis:  {headers['Result']}")
+    c.drawString(320, y, f"Ergebnis:  {headers['Result']}")
 
     y -= 8
     c.line(30, y, 380, y)
@@ -94,12 +95,12 @@ def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
         draw_scoresheet(c, chunk, y_start=y_start)
 
         # --- Footer integration ---
-        c.setFont("Helvetica", 9)
-        footer_text = "Contact: info@myclub.org | https://myclub.org"
+        c.setFont("Helvetica", 7)
+        footer_text = "Contact: laterunner@gmail.com.org | https://lichess.org"
         # Horizontal line above footer
-        c.line(30, 30, width - 30, 30)
+        c.line(30, 50, width - 30, 50)
         # Centered footer text
-        c.drawCentredString(width / 2.0, 15, footer_text)
+        c.drawCentredString(width / 2.0, 25, footer_text)
 
         # Finalize this page
         c.showPage()
@@ -116,33 +117,6 @@ def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
         except Exception as e:
             print(f"⚠️ Fehler beim JPG-Export für {headers['White']} vs {headers['Black']}: {e}")
 
-#--TO DELETE-------------------------------------------------------------------------------
-'''
-def generate_single_scoresheet(moves, headers, output_pdf, jpg_enabled=True):
-    os.makedirs(os.path.dirname(output_pdf), exist_ok=True)
-    c = canvas.Canvas(output_pdf, pagesize=A5)
-
-    chunk_size = 120
-    chunks = [moves[i:i + chunk_size] for i in range(0, len(moves), chunk_size)]
-
-    for page_number, chunk in enumerate(chunks, start=1):
-        y_start = draw_metadata_header(c, headers, page_number)
-        draw_scoresheet(c, chunk, y_start=y_start)
-        c.showPage()
-
-    c.save()
-
-    if jpg_enabled and os.path.exists(output_pdf) and os.path.getsize(output_pdf) > 0:
-        try:
-            time.sleep(0.5)
-            images = convert_from_path(output_pdf, dpi=300)
-            for i, img in enumerate(images):
-                img_path = os.path.splitext(output_pdf)[0] + f"_page{i+1}.jpg"
-                img.save(img_path, "JPEG")
-        except Exception as e:
-            print(f"⚠️ Fehler beim JPG-Export für {headers['White']} vs {headers['Black']}: {e}")
-'''
-#------------------------------------------------------------------------------
 
 def convert_pdf_to_jpg(pdf_path, output_dir):
     """
