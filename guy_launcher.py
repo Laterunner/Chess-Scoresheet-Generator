@@ -10,14 +10,6 @@ def run_generator(pgn_path, outdir, jpg_enabled):
         cmd.append("--jpg")
     subprocess.run(cmd)
 
-'''
-def show_autoclose_message(root):
-    popup = tk.Toplevel(root)
-    popup.title("Fertig")
-    tk.Label(popup, text="Alle Scoresheets wurden erstellt!").pack(padx=20, pady=20)
-    popup.after(3000, lambda: close_all(root, popup))
-'''
-#-------NEW---------------------------------------------------------------------------------
 def show_autoclose_message(root):
     popup = tk.Toplevel(root)
     popup.title("Fertig")
@@ -42,11 +34,10 @@ def show_autoclose_message(root):
     # Popup nach 3 Sekunden schließen
     popup.after(3000, lambda: close_all(root, popup))
 
-
-#----------------------------------------------------------------------------------------
 def close_all(root, popup):
     popup.destroy()
     root.destroy()
+
 def main():
     root = tk.Tk()
     root.title("Scoresheet Generator")
