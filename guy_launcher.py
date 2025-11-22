@@ -25,7 +25,7 @@ def main():
 
     # --- Fenstergröße und Position mittig setzen ---
     window_width = 400
-    window_height = 300
+    window_height = 500
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x_position = int((screen_width / 2) - (window_width / 2))
@@ -69,6 +69,11 @@ def main():
         pgn_path = pgn_entry.get()
         outdir = outdir_entry.get()
         jpg_enabled = jpg_var.get()
+
+
+
+
+        
         if pgn_path and os.path.exists(pgn_path):
             run_generator(pgn_path, outdir, jpg_enabled)
             show_autoclose_message(root)
