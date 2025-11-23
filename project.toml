@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Ein praktisches Tool zur Erzeugung von DIN A5 Schach-Scoresheets aus PGN-Dateien."
 readme = "README.md"
 authors = [
-    { name = "Marius" }
+    { name = "Marius Bartsch" }
 ]
 license = { text = "MIT" }
 requires-python = ">=3.8"
@@ -20,8 +20,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/<dein-user>/<dein-repo>"
-Repository = "https://github.com/<dein-user>/<dein-repo>"
+Homepage = "https://github.com/Laterunner/Chess-Scoresheet-Generator"
+Repository = "https://github.com/Laterunner/Chess-Scoresheet-Generator"
 
 [project.scripts]
 # CLI-Version
