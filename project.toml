@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chess-scoresheet-generator"
+version = "0.1.0"
+description = "Ein praktisches Tool zur Erzeugung von DIN A5 Schach-Scoresheets aus PGN-Dateien."
+readme = "README.md"
+authors = [
+    { name = "Marius" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+dependencies = [
+    "python-chess",
+    "reportlab",
+    "pdf2image",
+    "tqdm"
+]
+
+[project.urls]
+Homepage = "https://github.com/<dein-user>/<dein-repo>"
+Repository = "https://github.com/<dein-user>/<dein-repo>"
+
+[project.scripts]
+# CLI-Version
+scoresheet-generator = "scoresheet_generator:main"
+
+# GUI-Version
+scoresheet-gui = "scoresheet_generator.gui_launcher:main"
