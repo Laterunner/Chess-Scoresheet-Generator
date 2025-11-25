@@ -20,7 +20,7 @@ A simple Python tool for generating professional multi-page DIN A5 chess scoresh
 - included is a pgn file with 128 German Bundesliga games for testing
 
 ## 📦 The Program can be installed directly from PyPI:
-	https://pypi.org/project/chess-scoresheet-generator
+	[scoresheet-generator](https://pypi.org/project/chess-scoresheet-generator)
 	pip install chess-scoresheet-generator
 	you than can start from cli with scoresheet-generator or scoresheet-gui
 
