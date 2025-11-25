@@ -49,7 +49,7 @@ def draw_metadata_header(c, headers, page_number):
     y -= 12
     c.drawString(30, y, f"ELO:    {headers['WhiteElo']}")
     c.drawString(180, y, f"ELO:    {headers['BlackElo']}")
-    c.drawString(320, y, f"Ergebnis:  {headers['Result']}")
+    c.drawString(320, y, f"Result:  {headers['Result']}")
 
     y -= 8
     c.line(30, y, 380, y)
