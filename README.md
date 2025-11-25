@@ -65,7 +65,6 @@ A simple Python tool for generating professional multi-page DIN A5 chess scoresh
 ## 📜 License
 Open Source – MIT LicenseFree to use for clubs, tournaments, and personal archives.
 
-## ---------------------------------------------------------------------------------------
+## Example Scoresheet (JPG)
 
-![sample1_mini](https://github.com/user-attachments/assets/4b6fbc49-89ef-4bfc-b911-544b663d4208)
-
+![example1_game1_Ray_vs_Xavier pdf_page1](https://github.com/user-attachments/assets/d49bc09d-d0db-4db7-ac10-f0a6b361b9e5)
