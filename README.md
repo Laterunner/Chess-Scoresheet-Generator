@@ -60,12 +60,12 @@ A simple Python tool for generating professional multi-page DIN A5 chess scoresh
 ## 🛠️ To-Do / Ideas
 [ ] Opening detection (ECO code)
 [ ] Support for landscape or DIN A4
-[ ] Footer with club name or website
 
 
 ## 📜 License
 Open Source – MIT LicenseFree to use for clubs, tournaments, and personal archives.
 
-![sample1_mini](https://github.com/user-attachments/assets/4b6fbc49-89ef-4bfc-b911-544b663d4208)
+## ---------------------------------------------------------------------------------------
 
+![sample1_mini](https://github.com/user-attachments/assets/4b6fbc49-89ef-4bfc-b911-544b663d4208)
 
